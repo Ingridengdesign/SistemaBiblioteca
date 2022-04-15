@@ -9,8 +9,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import br.com.biblioteca.repository.AlunoRepository;
+import br.com.biblioteca.service.DisciplinaService;
 import br.com.biblioteca.service.TurmaService;
 import br.com.biblioteca.entity.Aluno;
+import br.com.biblioteca.entity.Disciplina;
 import br.com.biblioteca.entity.Turma;
 
 @Component
@@ -21,6 +23,9 @@ public class Init  implements ApplicationListener<ContextRefreshedEvent>{
 	
 	@Autowired
 	TurmaService turmaService;
+	
+	@Autowired
+	DisciplinaService disciplinaService;
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -61,6 +66,18 @@ public class Init  implements ApplicationListener<ContextRefreshedEvent>{
 		Turma turma1 = turmaService.buscaPorID(1);
 		
 		System.out.println(turma1.getNome());
+		
+		
+		
+		Disciplina java = new Disciplina();
+		java.setNome("Java");
+		
+		disciplinaService.salvar(java);
+		
+		Disciplina bd = new Disciplina();
+		bd.setNome("Banco de Dados");
+		
+		disciplinaService.salvar(bd);
 	}
 	
 }
