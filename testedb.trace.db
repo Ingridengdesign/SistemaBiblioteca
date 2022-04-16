@@ -1,0 +1,3 @@
+2022-04-15 21:49:34 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TURMA" not found; SQL statement:
+insert into turma (id, nome) values (default, ?) [42102-200]

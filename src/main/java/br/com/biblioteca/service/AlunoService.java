@@ -36,6 +36,8 @@ public class AlunoService {
 	public Aluno alterar(Aluno objAluno) {
 		Aluno aluno = buscaPorID(objAluno.getId());
 		aluno.setNome(objAluno.getNome());
+		aluno.setTurma(objAluno.getTurma());
+		aluno.setDisciplinas(objAluno.getDisciplinas());
 		return salvar(aluno);
 	}
 }
