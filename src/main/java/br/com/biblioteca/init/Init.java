@@ -9,9 +9,12 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import br.com.biblioteca.repository.AlunoRepository;
+import br.com.biblioteca.service.AvaliacaoService;
 import br.com.biblioteca.service.DisciplinaService;
 import br.com.biblioteca.service.TurmaService;
 import br.com.biblioteca.entity.Aluno;
+import br.com.biblioteca.entity.AlunoDisciplina;
+import br.com.biblioteca.entity.Avaliacao;
 import br.com.biblioteca.entity.Disciplina;
 import br.com.biblioteca.entity.Turma;
 
@@ -26,6 +29,9 @@ public class Init  implements ApplicationListener<ContextRefreshedEvent>{
 	
 	@Autowired
 	DisciplinaService disciplinaService;
+	
+	@Autowired
+	AvaliacaoService avaliacaoService;
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -103,7 +109,26 @@ public class Init  implements ApplicationListener<ContextRefreshedEvent>{
 		alunoRepo.save(aluno2);
 		alunoRepo.save(aluno3);
 		alunoRepo.save(aluno4);
-		 
+		
+		Avaliacao avaliacaoAluno1 = new Avaliacao();
+		
+		AlunoDisciplina alunoDisciplina1 = new AlunoDisciplina();
+		alunoDisciplina1.setAluno(aluno1);
+		alunoDisciplina1.setDisciplina(java);
+		
+		avaliacaoAluno1.setAlunoDisciplina(alunoDisciplina1);
+		avaliacaoAluno1.setConceito("A");
+		avaliacaoService.save(avaliacaoAluno1);
+		
+		Avaliacao avaliacaoAluno2 = new Avaliacao();
+		
+		AlunoDisciplina alunoDisciplina2 = new AlunoDisciplina();
+		alunoDisciplina2.setAluno(aluno2);
+		alunoDisciplina2.setDisciplina(bd);
+		
+		avaliacaoAluno2.setAlunoDisciplina(alunoDisciplina2);
+		avaliacaoAluno2.setConceito("B");
+		avaliacaoService.save(avaliacaoAluno2);
 	}
 	
 }
