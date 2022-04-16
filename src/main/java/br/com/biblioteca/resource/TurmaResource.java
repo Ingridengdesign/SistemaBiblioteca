@@ -5,11 +5,14 @@ import java.util.List;
 
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,6 +34,27 @@ public class TurmaResource {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Turma>> listarTurmas(){
 		List<Turma> turmas = turmaService.listarTodasTurmas();
+		return ResponseEntity.ok().body(turmas);
+	}
+	
+	@GetMapping(value ="/v1/page")
+	public ResponseEntity<Page<Turma>> listarTurmasPorPaginacaov1(
+		@RequestParam(value = "pagina", defaultValue = "0") int pagina,
+		@RequestParam(value = "linhasPorPagina", defaultValue = "24") int linhasPorPagina,
+		@RequestParam(value = "direcao", defaultValue = "ASC") String direcao,
+		@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy
+	){
+		Page<Turma> turmas = turmaService.buscaPorPaginacao(pagina, linhasPorPagina, direcao, orderBy);
+		return ResponseEntity.ok().body(turmas);
+	}
+	
+	@GetMapping(value ="/v2/page")
+	public ResponseEntity<Page<Turma>> listarTurmasPorPaginacaov2(
+		@RequestParam(value = "pagina", defaultValue = "0") int pagina,
+		@RequestParam(value = "direcao", defaultValue = "ASC") String direcao,
+		@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy
+	){
+		Page<Turma> turmas = turmaService.buscaPorPaginacao(pagina, 10, direcao, orderBy);
 		return ResponseEntity.ok().body(turmas);
 	}
 	
