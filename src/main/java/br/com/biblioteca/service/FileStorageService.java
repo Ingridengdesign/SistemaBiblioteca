@@ -1,9 +1,11 @@
 package br.com.biblioteca.service;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -35,6 +37,14 @@ public class FileStorageService {
 			}
 		}catch(MalformedURLException e) {
 			throw new RuntimeException("Error: " + e.getMessage());
+		}
+	}
+	
+	public Stream<Path> listarTodosArquivos(){
+		try {
+			return Files.walk(this.root, 1).filter(path-> !path.equals(this.root)).map(this.root::relativize);
+		}catch(IOException e) {
+			throw new RuntimeException("Não conseguimos ler os arquivos");
 		}
 	}
 }

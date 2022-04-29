@@ -1,5 +1,8 @@
 package br.com.biblioteca.resource;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -14,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.biblioteca.model.FileInfo;
 import br.com.biblioteca.service.FileStorageService;
 
 @RestController
@@ -48,5 +53,17 @@ public class FileResource {
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
 				.body(file);
+	}
+	
+	@GetMapping("/arquivos")
+	public ResponseEntity<List<FileInfo>> listarTodosArquivos(){
+		List<FileInfo> fileInfos = storageService.listarTodosArquivos().map(
+				path -> {
+					String filename = path.getFileName().toString();
+					String url = MvcUriComponentsBuilder.fromMethodName(FileResource.class, "getFile", path.getFileName().toString()).build().toString();
+					return new FileInfo(filename, url);
+					}).collect(Collectors.toList());
+		
+		return ResponseEntity.ok().body(fileInfos);
 	}
 }
