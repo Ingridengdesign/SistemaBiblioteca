@@ -66,4 +66,10 @@ public class FileResource {
 		
 		return ResponseEntity.ok().body(fileInfos);
 	}
+	
+	@GetMapping("/excluirTodosArquivos")
+	public ResponseEntity<String> excluirArquivos(){
+		storageService.deleteAll();
+		return ResponseEntity.ok().body("Arquivos excluídos com sucesso!");
+	}
 }

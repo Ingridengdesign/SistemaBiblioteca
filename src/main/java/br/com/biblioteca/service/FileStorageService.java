@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -19,6 +20,7 @@ public class FileStorageService {
 	
 	public void save(MultipartFile file) {
 		try {
+			Files.createDirectories(root);
 			Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
 		}catch(Exception e) {
 			throw new RuntimeException("Não foi possível gravar o arquivo! " + e.getMessage());
@@ -46,5 +48,9 @@ public class FileStorageService {
 		}catch(IOException e) {
 			throw new RuntimeException("Não conseguimos ler os arquivos");
 		}
+	}
+	
+	public void deleteAll(){
+		FileSystemUtils.deleteRecursively(root.toFile());
 	}
 }
